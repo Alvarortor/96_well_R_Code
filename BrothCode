@@ -1,0 +1,79 @@
+#Code for broth microdilution plates
+
+#packages; just hit enter
+{library (gplots)
+  library (plyr)  
+  library (lattice) 
+  library (Rmisc) 
+  library (car) 
+  library (FSA) 
+  library (multcompView) 
+  library (multcomp) 
+  library (agricolae) 
+  library (DescTools)
+  library (rcompanion)
+  library (ggplot2)
+  library(ggsignif)
+  library(reshape2)
+  library(tidyverse)
+  library(ggthemes)
+  library(ggprism)
+  }
+
+Dataset = DATATITLE
+attach(Dataset)
+names(Dataset)
+{
+DMEM = "hotpink"
+RPMI = "salmon"
+YPD = "burlywood"
+}
+
+
+#Edit the antifungal and concentration; only edit if necessary, not usually needed
+AF = "Amphotericin B" 
+Conc = 1 # remember this is 1/2 of the calculation since diluting 2 fold
+{AFlabel = paste(AF, "Concentration (ug/mL)", sep=" ")
+  numberlist = round(Conc/2^(seq(0, 9, by = 1)),3)
+  numberlist = c(numberlist ,"Untreated", "No Cells")
+  NDnumberlist = c("Untreated", "No Cells")
+
+}
+
+
+#Datalabels
+{ODXTT = expression(OD[495*"nm"])
+  ODCV = expression(OD[595*"nm"])
+  OD600 = expression(OD[600*"nm"])
+  AbsXTT = expression(Absorbance[495*"nm"])
+  AbsCV = expression(Absorbance[595*"nm"])
+  Abs600 = expression(Absorbance[600*"nm"])
+  }
+
+#Generate data to produce table
+Data = summarySE(data = Dataset, "Absorbance", group = "Column", conf.interval = 0.95)
+
+
+Plot  = ggplot(Data,
+               aes(x = Column, y = Absorbance, ymax = 30, ymin = 0 )) +
+  geom_bar(stat = "identity", fill = DMEM, col = "black", width = 0.7) +
+  geom_errorbar(aes(ymin = Absorbance - se, ymax = Absorbance + se),
+                width = 0.2, 
+                size = 0.5)  +
+  geom_point(data = Dataset,
+             aes(),alpha = 0.3, size = 4, shape = 17) +
+  scale_shape_manual(values = 18 ) +
+  scale_y_continuous(name = ODCV,
+                     breaks = seq(0,500,by = 10)) +
+  scale_x_discrete(name = AFlabel,
+                   breaks = Data$Column,
+                   labels= numberlist) +
+  scale_color_prism("floral") + 
+  theme_prism(base_size = 16,
+              axis_text_angle = 45) +
+scale_fill_prism("floral") 
+  guides(y = "prism_offset_minor") 
+Plot
+
+grid.arrange(test1, test2, ncol = 1, nrow = 2) 
+
