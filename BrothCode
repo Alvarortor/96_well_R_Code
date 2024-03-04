@@ -1,4 +1,4 @@
-#Code for broth microdilution plates
+#Code for broth microdilution plates in differnt media
 
 #packages; just hit enter
 {library (gplots)
@@ -28,7 +28,7 @@ DMEM = "hotpink"
 RPMI = "salmon"
 YPD = "burlywood"
 }
-
+ 
 
 #Edit the antifungal and concentration; only edit if necessary, not usually needed
 AF = "Amphotericin B" 
