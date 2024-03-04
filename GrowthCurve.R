@@ -8,12 +8,10 @@ library(ggforce)
 
 
 #Get data
-Dataset = X72hGC
+Dataset = YOUR_DATA_HERE
 attach(Dataset)
 names(Dataset)
 
-#How long did the experiment last in hours
-Duration = 72
 
 #Get averages for each strain at each timepoint, also have sd for error bars
 d = data.frame(Dataset)
@@ -21,8 +19,8 @@ mean.aggs = aggregate(Absorbance ~ Strain + Time, data = d, FUN = "mean")
 sd.aggs = aggregate(Absorbance ~ Strain + Time, data = d, FUN = "sd")
 
 #Check to see if you did the math wrong :(
-mean.aggs
-sd.aggs
+#mean.aggs
+#sd.aggs
 
 
 #Make growth curve
@@ -39,7 +37,9 @@ GC = ggplot(data = mean.aggs, aes(x = Time, y = Absorbance, group = Strain)) +
         legend.title = element_text(),
         legend.text = element_text(size = 16))
 
+#Get plot
 GC
+
 #Add error bars if feeling spicy
 GC + geom_errorbar(aes(ymin = mean.aggs$Absorbance - sd.aggs$Absorbance,
                   ymax = mean.aggs$Absorbance + sd.aggs$Absorbance))
