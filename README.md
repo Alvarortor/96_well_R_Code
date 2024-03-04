@@ -5,3 +5,5 @@ Please cite this code if you're using it.
 
 IMPORTANT
 Data must be set up in 2 columns in Excel so it can be read and easily plotted in ggplots, this also allows for ANOVA tests to be performed
+
+BiofilmCode, GrowthCurve, and Heatmap are main programs. Will include sample data for these soon. 
